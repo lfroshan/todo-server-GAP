@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: todo-server
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    # env_file:
+    #   - .env
+    depends_on:
+      - db  
+    command: sh -c "npm install && npm run start"
+
+  db:
+    image: postgres:13  # Use the official PostgreSQL image
+    container_name: myPostgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"  # Expose PostgreSQL on port 5432
+
+volumes:
+  postgres_data:
